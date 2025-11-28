@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Metodología del Diccionario Paramétrico</title>
+
+    <!-- Fuente Gotham instalada localmente -->
+    <style>
+    @font-face {
+        font-family: 'Gotham';
+        src: local('Gotham'), local('Gotham Book');
+    }
+    </style>
+
+    <style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+html, body{
+    width:100%;
+    height:100%;
+    font-family:'Gotham', sans-serif;
+    font-weight:300 !important;     
+    background:transparent;
+    overflow-x:hidden;
+}
+
+    /* ============================
+       CANVAS ANIMACIÓN
+    ============================= */
+    canvas{
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        z-index:-1;
+    }
+
+    /* ============================
+       HAMBURGUESA (IGUAL A INICIO)
+    ============================= */
+    .menu-btn{
+        position:fixed;
+        top:30px;
+        right:40px;
+        width:65px;
+        height:65px;
+        background:#4ED9D3;
+        color:#ffffff;
+        border-radius:18px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-size:40px;
+        cursor:pointer;
+        border:none;
+        outline:none;
+        box-shadow:0 0 14px rgba(78,217,211,0.7);
+        z-index:20;
+        transition:0.25s;
+    }
+
+    .menu-btn:hover{
+        box-shadow:0 0 20px rgba(78,217,211,0.95);
+    }
+
+/* ============================
+   MENÚ LATERAL
+============================ */
+
+button, .menu-group {
+    font-weight:300 !important;
+}
+
+.side-menu a {
+    font-weight:300 !important;
+}
+
+.side-menu{
+    position:fixed;
+    top:0;
+    right:-320px;
+    width:320px;
+    height:100vh;
+    background:#ffffff;
+    box-shadow:-4px 0 14px rgba(0,0,0,0.16);
+    padding:40px 30px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+    font-size:20px;
+    z-index:19;
+    transition:0.35s ease;
+}
+
+.side-menu a{
+    text-decoration:none;
+    color:#222;
+    padding-bottom:10px;
+    border-bottom:1px solid #e7e7e7;
+}
+
+.side-menu.activo{
+    right:0;
+}
+
+.menu-group{
+    background:none;
+    border:none;
+    outline:none;
+    text-align:left;
+    font-size:20px;
+    padding:0 0 10px 0;
+    border-bottom:1px solid #e7e7e7;
+    cursor:pointer;
+    color:#222;
+}
+
+.submenu{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    margin-top:8px;
+    margin-left:15px;
+    font-size:18px;
+}
+
+.oculto{
+    display:none;
+}
+
+    /* ============================
+       TÍTULO PRINCIPAL
+    ============================= */
+    .titulo-principal{
+        margin-top:55px;
+        margin-bottom:40px;
+        text-align:center;
+        font-size:26px;
+        font-weight:400;
+        letter-spacing:2px;
+        color:#333333;
+    }
+
+    /* ============================
+       CONTENEDOR GENERAL
+    ============================= */
+    .contenedor{
+        width:96%;
+        max-width:1200px;
+        margin:0 auto 80px auto;
+    }
+
+    .bloque{
+        display:flex;
+        align-items:flex-start;
+        margin-bottom:35px;
+    }
+
+    /* Botón–píldora de la izquierda */
+    .btn-titulo{
+        min-width:310px;
+        max-width:310px;
+        padding:12px 22px;
+        background:#4ED9D3;
+        color:#ffffff;
+        border:none;
+        border-radius:30px;
+        font-size:11px;
+        letter-spacing:1px;
+        text-align:left;
+        cursor:pointer;
+        box-shadow:0 0 10px rgba(78,217,211,0.55);
+        transition:0.25s;
+    }
+
+    .btn-titulo:hover{
+        box-shadow:0 0 18px rgba(78,217,211,0.85);
+    }
+
+    .texto{
+        margin-left:30px;
+        font-size:11px;
+        line-height:1.6;
+        color:#444444;
+        max-width:720px;
+        text-align:justify;
+    }
+
+    /* ============================
+       BOTÓN COLECTIVOS INFERIOR
+    ============================= */
+    .btn-bottom{
+        display:block;
+        margin:40px auto 10px auto;
+        padding:14px 60px;
+        background:#4ED9D3;
+        border-radius:30px;
+        border:none;
+        color:#ffffff;
+        font-size:13px;
+        letter-spacing:1px;
+        cursor:pointer;
+        box-shadow:0 0 12px rgba(78,217,211,0.55);
+        transition:0.25s;
+    }
+
+    .btn-bottom:hover{
+        box-shadow:0 0 18px rgba(78,217,211,0.85);
+    }
+
+    .box-colectivos{
+        text-align:center;
+        margin-bottom:35px;
+    }
+
+    .box-colectivos a{
+        text-decoration:none;
+        color:#333;
+        font-size:12px;
+        border-bottom:1px solid #4ED9D3;
+        padding-bottom:3px;
+    }
+
+    /* ============================
+       FOOTER (MISMO ESTILO INICIO)
+    ============================= */
+footer{
+    width:100%;
+    text-align:center;
+    font-size:12px;
+    color:#555;
+    margin-bottom:20px;
+}
+.side-menu a,
+.menu-group,
+.submenu a {
+    font-weight:300 !important;
+}
+
+    </style>
+</head>
+<body>
+
+<!-- HAMBURGUESA -->
+<button class="menu-btn" id="menuBtn">≡</button>
+
+<!-- MENÚ LATERAL -->
+<div class="side-menu" id="sideMenu">
+    <a href="index.html">Inicio</a>
+
+    <div class="menu-group" onclick="toggleSubmenu()">
+    Colectivos ▾
+</div>
+
+    <div id="submenu" class="submenu oculto">
+        <a href="colectivo_animalista.html">Colectivo Animalista</a>
+        <a href="rasgos_animalistas.html">Diccionario</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScUmgCjS6PLPH3ADlWlKlo0d7MOkndYrwhTFyjJTP1r2gGVzA/viewform?usp=header" target="_blank">Encuesta</a>
+        <a href="editor.html">Editor</a>
+    </div>
+</div>
+
+<!-- TÍTULO -->
+<h1 class="titulo-principal">METODOLOGÍA DEL DICCIONARIO PARAMÉTRICO</h1>
+
+<!-- CONTENEDOR GENERAL -->
+<div class="contenedor">
+
+    <!-- BLOQUE 1 -->
+    <div class="bloque">
+        <button class="btn-titulo" onclick="toggleText(0)">
+            ¿QUÉ ES UN DICCIONARIO PARAMÉTRICO Y DESDE DÓNDE SE CONSTRUYE?
+        </button>
+        <p id="texto0" class="texto oculto">
+            La metodología del diccionario paramétrico parte de comprender, con DeLanda, que toda identidad colectiva se organiza como un ensamblaje: un sistema dinámico compuesto por afectos, prácticas, percepciones y códigos culturales que se estabilizan en el tiempo. Moscovici complementa esta idea mostrando que esos ensamblajes se expresan mediante representaciones sociales, significados compartidos que actúan como marcos de interpretación para un grupo. El diccionario paramétrico se construye metodológicamente a partir de este doble fundamento: identificar los rasgos, emociones, valores y narrativas que constituyen la identidad de un colectivo, y estructurarlos en un sistema conceptual ordenado. Su aporte metodológico central es evitar que los proyectos —de cualquier tipo— dependan de intuiciones o preferencias individuales, garantizando que cada decisión se base en estructuras sociales reales y verificables.
+        </p>
+    </div>
+
+    <!-- BLOQUE 2 -->
+    <div class="bloque">
+        <button class="btn-titulo" onclick="toggleText(1)">
+            ¿CÓMO SE EXTRAEN LOS CONTENIDOS QUE ALIMENTAN EL DICCIONARIO?
+        </button>
+        <p id="texto1" class="texto oculto">
+            La metodología se alimenta mediante la extracción rigurosa de representaciones sociales, entendidas como el conjunto de imágenes, emociones, metáforas, palabras clave y asociaciones que un grupo produce acerca de sí mismo y de su relación con el entorno. A través de encuestas, entrevistas, observación y análisis cultural, se detectan patrones: repeticiones simbólicas, oposiciones recurrentes, emociones dominantes y núcleos de sentido. La metodología no recoge datos de manera superficial; los destila, transformando la complejidad cultural del grupo en categorías estables. Cada patrón detectado se convierte en un rasgo identitario, que luego será traducido a parámetros. Este paso es crucial porque garantiza que el diccionario paramétrico no opere con conceptos genéricos, sino con significados específicos derivados empíricamente del colectivo estudiado.
+        </p>
+    </div>
+
+    <!-- BLOQUE 3 -->
+    <div class="bloque">
+        <button class="btn-titulo" onclick="toggleText(2)">
+            ¿CÓMO SE CONECTA LO LOCAL CON LOS LENGUAJES CONTEMPORÁNEOS?
+        </button>
+        <p id="texto2" class="texto oculto">
+            La metodología del diccionario paramétrico no se limita a identificar identidad local, sino que la contextualiza dentro de lenguajes globales. Siguiendo a Neil Leach, se entiende que vivimos en una cultura digital donde ciertos códigos visuales, cromáticos y formales se han globalizado: gradientes, tonos neutros, continuidad, sistemas fluidos, estructuras rítmicas, etc. Metodológicamente, el diccionario vincula cada rasgo identitario local con estas gramáticas amplias, creando una doble lectura: por un lado, respeta los valores y significados del grupo; por otro, los sitúa dentro de repertorios culturalmente legibles a escala global. El aporte metodológico es que permite construir herramientas que, aun basadas en lo local, sean interpretables en entornos globalizados, convirtiendo el diccionario en un puente entre identidad particular y cultura visual contemporánea.
+        </p>
+    </div>
+
+    <!-- BLOQUE 4 -->
+    <div class="bloque">
+        <button class="btn-titulo" onclick="toggleText(3)">
+            ¿CÓMO SE TRANSFORMA EL SIGNIFICADO EN UN SISTEMA DE SIGNOS?
+        </button>
+        <p id="texto3" class="texto oculto">
+            La metodología convierte los rasgos identitarios en un sistema semiótico operativo. Eco demuestra que todo fenómeno sensible puede funcionar como signo, mientras que Jencks explica que los sistemas formales comunican narrativas, valores y emociones. Pellegrino profundiza en cómo los patrones perceptivos se vuelven legibles culturalmente. Metodológicamente, el diccionario toma cada valor social (cuidado, justicia, calma, protección, etc.) y define cómo opera como signo, estableciendo equivalencias directas entre significado → categoría simbólica → descriptor técnico. La función metodológica de esta fase es esencial: proporciona una gramática consistente que permite trabajar con significados no como abstracciones, sino como signos estructurados, comparables y transferibles. El diccionario se convierte así en un sistema semiótico normado, no en una colección subjetiva de palabras.
+        </p>
+    </div>
+
+    <!-- BLOQUE 5 -->
+    <div class="bloque">
+        <button class="btn-titulo" onclick="toggleText(4)">
+            ¿CÓMO SE INCORPORAN COLOR, TEXTURA, LUZ Y SENSORIALIDAD?
+        </button>
+        <p id="texto4" class="texto oculto">
+            El diccionario incorpora la dimensión sensorial entendiendo, con Caivano y Chauvie &amp; Risso, que el color, la textura, la luminosidad y la rugosidad no son ornamentos, sino constructores de sentido. Metodológicamente, cada rasgo identitario recibe una traducción sensorial precisa: gama cromática, intensidad, contraste, suavidad, nivel de activación perceptual, temperatura emocional, etc. Estas selecciones no son estéticas, sino analíticas: se eligen porque tienen correspondencia directa con los significados extraídos del colectivo. Así, la metodología garantiza que la dimensión sensorial no sea decorativa sino coherente con la identidad. Esta capa perceptual aporta profundidad al diccionario, permitiendo que cada rasgo se exprese mediante un conjunto de atributos sensoriales claramente definidos y metodológicamente sustentados.
+        </p>
+    </div>
+
+    <!-- BLOQUE 6 -->
+    <div class="bloque">
+        <button class="btn-titulo" onclick="toggleText(5)">
+            ¿CÓMO SE CONVIERTE LA IDENTIDAD EN PARÁMETROS OPERATIVOS?
+        </button>
+        <p id="texto5" class="texto oculto">
+            La traducción paramétrica es el núcleo técnico de la metodología. Siguiendo a Patrik Schumacher, se entiende que un parámetro es una variable regulable que permite sistematizar comportamientos, intensidades o relaciones. La metodología toma cada rasgo identitario y lo transforma en una variable paramétrica con rango numérico (0.0–1.0, 0–100). Cada variable responde a un criterio conceptual: continuidad, apertura, densidad, suavidad, dirección, contraste, etc. Esto permite que los valores sociales del colectivo se conviertan en datos manipulables, comparables y reproducibles, eliminando la subjetividad del proceso interpretativo. Esta etapa aporta una herramienta metodológica robusta: la identidad deja de ser un discurso abstracto y se convierte en un sistema estructurado de relaciones cuantificables, completamente utilizable en procesos analíticos, computacionales o evaluativos.
+        </p>
+    </div>
+
+    <!-- BLOQUE 7 -->
+    <div class="bloque">
+        <button class="btn-titulo" onclick="toggleText(6)">
+            ¿CÓMO FUNCIONA EL DICCIONARIO Y QUÉ BENEFICIOS METODOLÓGICOS OFRECE?
+        </button>
+        <p id="texto6" class="texto oculto">
+            En su fase final, la metodología convierte el diccionario en un instrumento operativo capaz de organizar decisiones, justificar procesos y mantener coherencia conceptual. Su aporte metodológico es múltiple: (1) actúa como guía sistemática, permitiendo tomar decisiones basadas en parámetros derivados directamente de significados; (2) proporciona un marco estable que asegura consistencia interna entre todas las partes del análisis o proyecto; (3) establece una cadena clara y verificable entre datos sociales → rasgos identitarios → signos → variables → parámetros, eliminando arbitrariedades; (4) funciona como herramienta de comunicación, ya que permite explicar de forma transparente por qué cada parámetro existe y qué representa; y (5) posibilita variaciones, comparaciones y simulaciones sin perder fidelidad al significado original. En conjunto, el diccionario paramétrico se convierte en una metodología rigurosa que sintetiza identidad, teoría y análisis en un sistema operativo coherente.
+        </p>
+    </div>
+
+</div>
+
+<!-- BOTÓN COLECTIVOS ABAJO -->
+<button class="btn-bottom" onclick="toggleColectivos()">
+    COLECTIVOS ▾
+</button>
+
+<div id="box-colectivos" class="box-colectivos oculto">
+    <a href="colectivo_animalista.html">Colectivo Animalista</a>
+</div>
+
+<!-- CANVAS ANIMACIÓN -->
+<canvas id="canvas_metodologia"></canvas>
+<script src="static/animacion_metodologia.js"></script>
+
+<!-- FOOTER -->
+<footer>© DICCIONARIO PARAMÉTRICO 2025. Todos los derechos reservados.</footer>
+
+<!-- SCRIPTS DE INTERACCIÓN -->
+<script>
+function toggleText(i){
+    const p = document.getElementById("texto"+i);
+    p.classList.toggle("oculto");
+}
+
+function toggleColectivos(){
+    document.getElementById("box-colectivos").classList.toggle("oculto");
+}
+
+function toggleSubmenu(){
+    document.getElementById("submenu").classList.toggle("oculto");
+}
+
+const menuBtn = document.getElementById("menuBtn");
+const sideMenu = document.getElementById("sideMenu");
+
+menuBtn.onclick = () => {
+    sideMenu.classList.toggle("activo");
+};
+</script>
+
+</body>
+</html>

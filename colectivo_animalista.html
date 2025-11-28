@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Colectivo Animalista</title>
+
+    <!-- Fuente Gotham -->
+    <style>
+    @font-face {
+        font-family: 'Gotham';
+        src: local('Gotham'), local('Gotham Book');
+    }
+    </style>
+
+    <style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    html, body{
+        width:100%;
+        height:100%;
+        font-family:'Gotham', sans-serif;
+        font-weight:300;
+        background:transparent;
+        overflow-x:hidden;
+    }
+
+    /* ===========================
+       CANVAS ANIMACIÓN
+    ============================ */
+    canvas{
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        z-index:-1;
+    }
+
+    /* ===========================
+       HAMBURGUESA (IGUAL METODOLOGÍA)
+    ============================ */
+    .menu-btn{
+        position:fixed;
+        top:30px;
+        right:40px;
+        width:65px;
+        height:65px;
+        background:#4ED9D3;
+        color:white;
+        border-radius:18px;
+        font-size:40px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        cursor:pointer;
+        border:none;
+        box-shadow:0 0 14px rgba(78,217,211,0.7);
+        z-index:20;
+        transition:.25s;
+    }
+
+    .menu-btn:hover{
+        box-shadow:0 0 20px rgba(78,217,211,0.95);
+    }
+
+    /* ===========================
+       MENÚ LATERAL
+    ============================ */
+    .side-menu{
+        position:fixed;
+        top:0;
+        right:-320px;
+        width:320px;
+        height:100vh;
+        background:#ffffff;
+        padding:40px 30px;
+        display:flex;
+        flex-direction:column;
+        gap:25px;
+        font-size:20px;
+        box-shadow:-4px 0 14px rgba(0,0,0,0.16);
+        z-index:19;
+        transition:.35s ease;
+    }
+
+    .side-menu a{
+        text-decoration:none;
+        color:#222;
+        padding-bottom:10px;
+        border-bottom:1px solid #e7e7e7;
+        font-weight:300;
+    }
+
+    .side-menu.activo{
+        right:0;
+    }
+
+    /* ===========================
+       TÍTULO (MISMO DE METODOLOGÍA)
+    ============================ */
+    .titulo-principal{
+        margin-top:55px;
+        text-align:center;
+        font-size:26px;
+        font-weight:400;
+        letter-spacing:2px;
+        color:#333;
+        margin-bottom:60px;
+    }
+
+    /* ===========================
+       SUBTÍTULOS (MISMO ESTILO DE BOTONES)
+    ============================ */
+    .subtitulo{
+        text-align:center;
+        font-size:11px;
+        letter-spacing:1px;
+        font-weight:300;
+        margin-bottom:25px;
+        color:#222;
+    }
+
+    /* ===========================
+       PÁRRAFOS (IGUAL METODOLOGÍA)
+    ============================ */
+    .texto{
+        margin:0 auto;
+        max-width:850px;
+        font-size:11px;
+        line-height:1.6;
+        color:#444;
+        text-align:center;
+        margin-bottom:40px;
+    }
+
+    /* ===========================
+       BOTÓN DICCIONARIO
+    ============================ */
+    .btn-bottom{
+        display:block;
+        margin:10px auto 20px auto;
+        padding:14px 60px;
+        background:#4ED9D3;
+        color:white;
+        font-size:13px;
+        border:none;
+        border-radius:30px;
+        cursor:pointer;
+        box-shadow:0 0 12px rgba(78,217,211,0.55);
+        transition:.25s;
+    }
+
+    .btn-bottom:hover{
+        box-shadow:0 0 18px rgba(78,217,211,0.85);
+    }
+
+    /* ===========================
+       FOOTER
+    ============================ */
+    footer{
+        text-align:center;
+        font-size:12px;
+        color:#555;
+        margin-bottom:25px;
+    }
+    </style>
+</head>
+<body>
+
+<!-- BOTÓN HAMBURGUESA -->
+<button class="menu-btn" id="menuBtn">≡</button>
+
+<!-- MENÚ LATERAL (SOLO INICIO Y METODOLOGÍA) -->
+<div class="side-menu" id="sideMenu">
+    <a href="index.html">Inicio</a>
+    <a href="metodologia.html">Metodología</a>
+</div>
+
+<!-- TÍTULO -->
+<h1 class="titulo-principal">COLECTIVO ANIMALISTA</h1>
+
+<!-- SUBTÍTULO 1 -->
+<p class="subtitulo">¿QUÉ SE CONSIDERA “COLECTIVO ANIMALISTA”?</p>
+
+<!-- PÁRRAFO 1 -->
+<p class="texto">
+El colectivo animalista se entiende como un ensamblaje social (DeLanda) conformado por personas que comparten una visión ética, afectiva y política centrada en la protección, defensa y reconocimiento de los animales como seres sintientes. No es un grupo homogéneo, sino una estructura flexible que se articula a través de valores comunes: cuidado, empatía, rechazo al maltrato, respeto por la vida y conexión con la naturaleza.
+Moscovici explica que los colectivos se construyen mediante representaciones sociales, y en el caso animalista estas incluyen: imágenes de protección, denuncia del sufrimiento animal, emociones de ternura, deseos de refugio, y símbolos como mascotas rescatadas, huellas, corazones, o ambientes naturales.
+Desde una perspectiva semiótica (Eco, Jencks), el colectivo animalista funciona como un productor de signos, ya que genera un lenguaje visual y emocional propio: suavidad, calidez, refugio, organicidad y transparencia afectiva. Estas representaciones no son aisladas, sino que crean una identidad compartida que orienta prácticas, discursos y estéticas. Por ello, el animalismo se considera un colectivo emocional-político, donde la defensa de los animales es al mismo tiempo una postura ética, una sensibilidad compartida y un imaginario cultural que cada miembro refuerza.
+<!-- TODO EL TEXTO QUE YA TENÍAS AQUÍ SIN CAMBIAR -->
+</p>
+
+<!-- SUBTÍTULO 2 -->
+<p class="subtitulo">¿CÓMO SE CONSIGUIERON LOS DATOS?</p>
+
+<!-- PÁRRAFO 2 -->
+<p class="texto">
+Los datos se obtuvieron mediante un instrumento de recolección estructurado, específicamente un formulario digital (Google Forms), diseñado para captar percepciones, emociones, asociaciones simbólicas y representaciones sociales vinculadas al trato animal y la identidad animalista.
+El formulario incluyó preguntas abiertas y cerradas que permitieron recopilar información en cuatro dimensiones fundamentales: (1) emociones evocadas, (2) colores asociados, (3) sensaciones táctiles y espaciales, (4) nociones de protección o maltrato.
+Este tipo de instrumento es coherente con la metodología de Moscovici, ya que permite identificar patrones de significado compartido dentro de un grupo. Posteriormente, las respuestas fueron sistematizadas, categorizadas e interpretadas mediante análisis de frecuencias, patrones semánticos y correlaciones conceptuales, lo que facilitó detectar rasgos identitarios dominantes (como cuidado, empatía, memoria, libertad y naturaleza).
+Los datos obtenidos no se utilizaron como simples opiniones, sino como insumos estructurales para construir variables de diseño, siguiendo la lógica del diseño paramétrico: cada significado se transformó en una variable cuantificable con rango numérico definido.
+<!-- TODO EL TEXTO QUE YA TENÍAS AQUÍ -->
+</p>
+
+<!-- BOTÓN INFERIOR -->
+<button class="btn-bottom" onclick="location.href='rasgos_animalistas.html'">
+    DICCIONARIO 
+</button>
+
+<!-- FOOTER -->
+<footer>© DICCIONARIO PARAMÉTRICO 2025. Todos los derechos reservados.</footer>
+
+<!-- JS MENÚ -->
+<script>
+const menuBtn = document.getElementById("menuBtn");
+const sideMenu = document.getElementById("sideMenu");
+
+menuBtn.onclick = () =>{
+    sideMenu.classList.toggle("activo");
+};
+</script>
+
+</body>
+</html>

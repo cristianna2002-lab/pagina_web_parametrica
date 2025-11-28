@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Editor Paramétrico Animalista</title>
+
+<style>
+/* ============================
+   FUENTE
+============================ */
+@font-face {
+    font-family:'Gotham';
+    src:local('Gotham'), local('Gotham Book');
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html, body{
+    width:100%;
+    height:100%;
+    background:white;
+    font-family:'Gotham', sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+}
+
+/* ============================
+   BOTÓN HAMBURGUESA
+============================ */
+.menu-btn{
+    position:fixed;
+    top:30px;
+    right:40px;
+    width:65px;
+    height:65px;
+    background:#4ED9D3;
+    border-radius:18px;
+    border:none;
+    color:white;
+    font-size:40px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    z-index:20;
+    box-shadow:0 0 14px rgba(78,217,211,0.6);
+}
+
+/* ============================
+   MENÚ LATERAL
+============================ */
+.side-menu{
+    position:fixed;
+    top:0;
+    right:-320px;
+    width:320px;
+    height:100vh;
+    background:white;
+    padding:40px 30px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+    font-size:20px;
+    transition:0.35s;
+    z-index:19;
+    box-shadow:-4px 0 14px rgba(0,0,0,0.2);
+}
+.side-menu.activo{ right:0; }
+
+.side-menu a{
+    text-decoration:none;
+    color:#222;
+    padding-bottom:10px;
+    border-bottom:1px solid #e7e7e7;
+}
+
+.menu-group{
+    background:none;
+    border:none;
+    outline:none;
+    padding:0 0 10px 0;
+    text-align:left;
+    cursor:pointer;
+    font-size:20px;
+    color:#222;
+    border-bottom:1px solid #e7e7e7;
+    font-weight:300 
+}
+
+#pantalla-acceso h2{
+    font-weight:300 !important;
+}
+
+.btn-bottom{
+    background:none;
+    border:none;
+    font-size:20px;
+    color:#222;
+    padding:10px 0;
+    cursor:pointer;
+    font-weight:300 !important;
+}
+
+.submenu{
+    margin-left:15px;
+    margin-top:8px;
+    font-size:18px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+.oculto{ display:none; }
+
+/* ============================
+   PANTALLA DE ACCESO
+============================ */
+#pantalla-acceso{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:10;
+}
+
+.card{
+    border:2px solid #4ED9D3;
+    border-radius:18px;
+    padding:40px;
+    width:380px;
+    text-align:center;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    margin-top:20px;
+    border:none;
+    border-radius:30px;
+    background:#e6e6e6;
+    text-align:center;
+}
+
+.boton-acceso{
+    width:100%;
+    margin-top:25px;
+    padding:14px 0;
+    border:none;
+    border-radius:30px;
+    background:#4ED9D3;
+    color:white;
+    cursor:pointer;
+    box-shadow:0 0 12px rgba(78,217,211,0.55);
+}
+
+/* ============================
+   EDITOR
+============================ */
+#editor{
+    display:none;
+    padding-top:120px;
+    width:95%;
+    max-width:1400px;
+    margin:auto;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:25px;
+}
+
+.tarjeta{
+    border:2px solid #4ED9D3;
+    border-radius:18px;
+    padding:18px;
+    background:white;
+    box-shadow:0 0 12px rgba(78,217,211,0.2);
+}
+
+.titulo-tarjeta{
+    text-align:center;
+    font-size:14px;
+    font-weight:500;
+    margin-bottom:10px;
+}
+
+.label{
+    font-size:11px;
+    margin-top:10px;
+    margin-bottom:4px;
+}
+
+input.campo{
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    background:white;
+    font-size:11px;
+}
+
+.valor-box{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.flecha{
+    width:24px;
+    height:24px;
+    background:#4ED9D3;
+    border:none;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.btn-guardar{
+    display:block;
+    margin:40px auto;
+    width:300px;
+    padding:14px 0;
+    background:#4ED9D3;
+    border-radius:30px;
+    border:none;
+    color:white;
+    cursor:pointer;
+    box-shadow:0 0 12px rgba(78,217,211,0.55);
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================
+     HAMBURGUESA
+============================ -->
+<button class="menu-btn" id="menuBtn">≡</button>
+
+<!-- ============================
+     MENÚ
+============================ -->
+<div class="side-menu" id="sideMenu">
+    <a href="index.html">Inicio</a>
+    <a href="metodologia.html">Metodología</a>
+
+    <div class="menu-group" onclick="toggleSubmenu()">Colectivos ▾</div>
+    <div id="submenu" class="submenu oculto">
+        <a href="colectivo_animalista.html">Colectivo Animalista</a>
+        <a href="rasgos_animalistas.html">Diccionario</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScUmgCjS6PLPH3ADlWlKlo0d7MOkndYrwhTFyjJTP1r2gGVzA/viewform?usp=header" target="_blank">Encuesta</a>
+    </div>
+</div>
+
+<!-- ============================
+     PANTALLA ACCESO
+============================ -->
+<div id="pantalla-acceso">
+    <div class="card">
+        <h2>ACCESO RESTRINGIDO</h2>
+        <p style="font-size:13px;margin-top:8px;">Ingresa la contraseña para editar los rasgos</p>
+
+        <input id="pass" type="password" placeholder="Contraseña">
+        <button class="boton-acceso" onclick="validar()">ENTRAR</button>
+    </div>
+
+    <footer style="margin-top:40px;font-size:12px;color:#777;">
+        © DICCIONARIO PARAMÉTRICO 2025. Todos los derechos reservados.
+    </footer>
+</div>
+
+<!-- ============================
+     EDITOR
+============================ -->
+<div id="editor">
+    <div class="grid" id="grid"></div>
+    <button class="btn-guardar" onclick="guardar()">GUARDAR CAMBIOS</button>
+</div>
+
+<script>
+/* ------------------------------
+   MENÚ LATERAL
+------------------------------ */
+document.getElementById("menuBtn").onclick = ()=>{
+    document.getElementById("sideMenu").classList.toggle("activo");
+};
+function toggleSubmenu(){
+    document.getElementById("submenu").classList.toggle("oculto");
+}
+
+/* ------------------------------
+   CONTRASEÑA
+------------------------------ */
+function validar(){
+    let p = document.getElementById("pass").value;
+    if(p === "12345678"){
+        document.getElementById("pantalla-acceso").style.display="none";
+        document.getElementById("editor").style.display="block";
+    } else {
+        alert("Contraseña incorrecta");
+    }
+}
+
+/* ------------------------------
+   DATOS BASE
+------------------------------ */
+let datos = JSON.parse(localStorage.getItem("diccionarioAnimalista")) || [
+    {rasgo:"Cariño", significado:"Vínculo afectivo", variable:"gradiente_color", rango:"0.0–1.0", valor:0.66, funcion:"Gradiente suave"},
+    {rasgo:"Empatía", significado:"Sensibilidad", variable:"intensidad_luz", rango:"0.0–1.0", valor:0.74, funcion:"Luz suave"},
+    {rasgo:"Justicia", significado:"Postura ética", variable:"opacidad", rango:"0.0–1.0", valor:0.65, funcion:"Zonas firmes"},
+    {rasgo:"Respeto", significado:"Valor a la vida", variable:"apertura_paneles", rango:"0–100", valor:60, funcion:"Apertura cinética"},
+    {rasgo:"Calidez", significado:"Ternura", variable:"textura_suave", rango:"0–100", valor:72, funcion:"Suavidad"},
+    {rasgo:"Refugio", significado:"Protección", variable:"forma_refugio", rango:"0–100", valor:58, funcion:"Curvaturas"},
+    {rasgo:"Naturaleza", significado:"Conexión viva", variable:"ondulacion_organica", rango:"0.0–1.0", valor:0.74, funcion:"Ondas orgánicas"},
+    {rasgo:"Rescate", significado:"Salvar vidas", variable:"direccionalidad_fluida", rango:"0.0–1.0", valor:0.69, funcion:"Flujos"},
+    {rasgo:"Calma", significado:"Bienestar", variable:"porosidad_luminosa", rango:"0–100", valor:66, funcion:"Luz filtrada"},
+    {rasgo:"Rechazo", significado:"Negación del maltrato", variable:"saturacion_contraste", rango:"0.0–1.0", valor:0.57, funcion:"Contraste"},
+];
+
+/* ------------------------------
+   GENERAR TARJETAS
+------------------------------ */
+const grid = document.getElementById("grid");
+datos.forEach((d,i)=>{
+    grid.innerHTML += `
+        <div class="tarjeta">
+
+            <div class="titulo-tarjeta">${d.rasgo.toUpperCase()}</div>
+
+            <div class="label">SIGNIFICADO:</div>
+            <input class="campo" id="s${i}" value="${d.significado}">
+
+            <div class="label">VARIABLE PARAMÉTRICA:</div>
+            <input class="campo" id="v${i}" value="${d.variable}">
+
+            <div class="label">RANGO:</div>
+            <input class="campo" id="r${i}" value="${d.rango}">
+
+            <div class="label">VALOR:</div>
+            <div class="valor-box">
+                <button class="flecha" onclick="cambiar(${i},1)">▲</button>
+                <input class="campo" id="va${i}" value="${d.valor}">
+                <button class="flecha" onclick="cambiar(${i},-1)">▼</button>
+            </div>
+
+            <div class="label">FUNCIÓN:</div>
+            <input class="campo" id="f${i}" value="${d.funcion}">
+        </div>
+    `;
+});
+
+/* ------------------------------
+   FLECHAS
+------------------------------ */
+function cambiar(i,dir){
+    let input = document.getElementById("va"+i);
+    let val = parseFloat(input.value);
+    val += dir * 0.01;
+    if(val < 0) val = 0;
+    input.value = val.toFixed(2);
+}
+
+/* ------------------------------
+   SUBIR A LA API (PHP)
+------------------------------ */
+async function subirAPI(){
+
+    let apiData = {};
+
+    datos.forEach(d => {
+        apiData[d.rasgo.toLowerCase()] = {
+            significado: d.significado,
+            variable: d.variable,
+            rango: d.rango,
+            valor: d.valor,
+            funcion: d.funcion
+        };
+    });
+
+    await fetch("api/guardar.php", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(apiData)
+    });
+}
+
+/* ------------------------------
+   GUARDAR TODO + API
+------------------------------ */
+async function guardar(){
+    datos.forEach((d,i)=>{
+        d.significado = document.getElementById("s"+i).value;
+        d.variable    = document.getElementById("v"+i).value;
+        d.rango       = document.getElementById("r"+i).value;
+        d.valor       = parseFloat(document.getElementById("va"+i).value);
+        d.funcion     = document.getElementById("f"+i).value;
+    });
+
+    // Guardar local
+    localStorage.setItem("diccionarioAnimalista", JSON.stringify(datos));
+
+    // Guardar API (si existe)
+    try{
+        await subirAPI();
+        alert("Cambios guardados y API actualizada ✔");
+    }catch(e){
+        alert("Cambios guardados (API aún no conectada) ✔");
+    }
+}
+
+</script>
+
+</body>
+</html>

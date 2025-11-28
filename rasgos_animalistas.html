@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Diccionario de Rasgos Identitarios Animalistas</title>
+
+    <!-- Fuente Gotham instalada localmente -->
+    <style>
+    @font-face {
+        font-family: 'Gotham';
+        src: local('Gotham'), local('Gotham Book');
+    }
+    </style>
+
+    <style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    html, body{
+        width:100%;
+        height:100%;
+        font-family:'Gotham', sans-serif;
+        font-weight:300;
+        background:transparent;
+        overflow-x:hidden;
+    }
+
+    /* ============================
+       CANVAS ANIMACIÓN
+    ============================= */
+    canvas#canvas{
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        z-index:-2;
+    }
+
+    /* Cubre la parte superior para que la animación inicie SOLO desde los rasgos hacia abajo */
+    .overlay-superior{
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:340px;
+        background:white;
+        z-index:-1;
+        pointer-events:none;
+    }
+
+    /* ============================
+       HAMBURGUESA
+    ============================= */
+    .menu-btn{
+        position:fixed;
+        top:30px;
+        right:40px;
+        width:65px;
+        height:65px;
+        background:#4ED9D3;
+        color:#ffffff;
+        border-radius:18px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-size:40px;
+        cursor:pointer;
+        border:none;
+        outline:none;
+        box-shadow:0 0 14px rgba(78,217,211,0.7);
+        z-index:20;
+        transition:0.25s;
+    }
+
+    .menu-btn:hover{
+        box-shadow:0 0 20px rgba(78,217,211,0.95);
+    }
+
+    /* ============================
+       MENÚ LATERAL
+    ============================= */
+    .side-menu{
+        position:fixed;
+        top:0;
+        right:-320px;
+        width:320px;
+        height:100vh;
+        background:#ffffff;
+        box-shadow:-4px 0 14px rgba(0,0,0,0.16);
+        padding:40px 30px;
+        display:flex;
+        flex-direction:column;
+        gap:22px;
+        font-size:20px;
+        z-index:19;
+        transition:0.35s ease;
+        font-weight:300;
+    }
+
+    .side-menu a{
+        text-decoration:none;
+        color:#222;
+        padding-bottom:10px;
+        border-bottom:1px solid #e7e7e7;
+        font-weight:300;
+    }
+
+    .side-menu.activo{
+        right:0;
+    }
+
+    .menu-group{
+        background:none;
+        border:none;
+        outline:none;
+        text-align:left;
+        font-size:20px;
+        padding:0 0 10px 0;
+        border-bottom:1px solid #e7e7e7;
+        cursor:pointer;
+        color:#222;
+        font-weight:300;
+    }
+
+    .submenu{
+        display:flex;
+        flex-direction:column;
+        gap:16px;
+        margin-top:8px;
+        margin-left:15px;
+        font-size:18px;
+    }
+
+    .oculto{
+        display:none;
+    }
+
+    /* ============================
+       TÍTULO
+    ============================= */
+    .titulo-principal{
+        margin-top:55px;
+        margin-bottom:35px;
+        text-align:center;
+        font-size:26px;
+        font-weight:400;
+        letter-spacing:2px;
+        color:#333333;
+    }
+
+    /* ============================
+       TABLA
+    ============================= */
+    .tabla-contenedor{
+        width:96%;
+        max-width:1200px;
+        margin:0 auto 30px auto;
+        background:white;
+    }
+
+    table.tabla-rasgos{
+        width:100%;
+        border-collapse:collapse;
+        font-size:11px;
+        text-align:left;
+    }
+
+    .tabla-rasgos thead{
+        background:#4ED9D3;
+        color:white;
+    }
+
+    .tabla-rasgos th,
+    .tabla-rasgos td{
+        border:1px solid #e0e0e0;
+        padding:6px 8px;
+        vertical-align:top;
+    }
+
+    .tabla-rasgos tbody tr:nth-child(even){
+        background:#f7f7f7;
+    }
+
+    /* ============================
+       DOS COLUMNAS
+    ============================= */
+    .zona-rasgos{
+        width:96%;
+        max-width:1200px;
+        margin:0 auto 50px auto;
+        display:flex;
+        gap:40px;
+        align-items:flex-start;
+    }
+
+    .col-izq{
+        flex:1;
+    }
+
+    .col-der{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:130px;   /* ← mueve la imagen más abajo */
+}
+
+    .img-columna{
+        max-width:100%;
+        display:block;
+    }
+
+    /* ============================
+       BOTONES DE RASGOS
+    ============================= */
+    .rasgo-btn{
+        width:100%;
+        padding:12px 22px;
+        margin-bottom:14px;
+        background:#4ED9D3;
+        color:white;
+        border-radius:30px;
+        font-size:11px;
+        letter-spacing:1px;
+        text-align:left;
+        cursor:pointer;
+        box-shadow:0 0 10px rgba(78,217,211,0.55);
+        transition:0.25s;
+    }
+
+    .rasgo-btn:hover{
+        box-shadow:0 0 18px rgba(78,217,211,0.85);
+    }
+
+    .rasgo-texto{
+        font-size:11px;
+        line-height:1.6;
+        color:#444444;
+        text-align:justify;
+        margin:-4px 0 14px 12px;
+        padding:8px 10px 4px 10px;
+        max-width:450px;
+        display:none;
+    }
+
+    /* ============================
+       BOTONES FINALES
+    ============================= */
+   .botones-inferiores{
+    width:96%;
+    max-width:600px;
+    margin:40px auto 20px auto;
+    display:flex;
+    justify-content:center;
+    gap:18px;   /* ← Separación entre botones */
+}
+
+.btn-bottom{
+    padding:14px 60px;    /* Igual al botón de Metodología */
+    background:#4ED9D3;
+    border-radius:30px;
+    border:none;
+    color:white;
+    font-size:13px;
+    letter-spacing:1px;
+    cursor:pointer;
+    box-shadow:0 0 12px rgba(78,217,211,0.55);
+    transition:0.25s;
+    white-space:nowrap;   /* ← evita que se parta el texto */
+}
+
+
+    /* ============================
+       FOOTER
+    ============================= */
+    footer{
+        width:100%;
+        text-align:center;
+        font-size:12px;
+        color:#555;
+        margin-bottom:20px;
+    }
+    </style>
+</head>
+<body>
+
+<!-- HAMBURGUESA -->
+<button class="menu-btn" id="menuBtn">≡</button>
+
+<!-- MENÚ LATERAL -->
+<div class="side-menu" id="sideMenu">
+    <a href="index.html">Inicio</a>
+    <a href="metodologia.html">Metodología</a>
+
+    <div class="menu-group" onclick="toggleSubmenu()">Colectivos ▾</div>
+
+    <div id="submenu" class="submenu oculto">
+        <a href="colectivo_animalista.html">Colectivo Animalista</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScUmgCjS6PLPH3ADlWlKlo0d7MOkndYrwhTFyjJTP1r2gGVzA/viewform?usp=header" target="_blank">Encuesta</a>
+        <a href="editor.html">Editor</a>
+    </div>
+</div>
+
+<h1 class="titulo-principal">DICCIONARIO DE RASGOS IDENTITARIOS ANIMALISTAS</h1>
+
+<!-- TABLA -->
+<div class="tabla-contenedor">
+<table class="tabla-rasgos" id="tabla-rasgos">
+<thead>
+<tr>
+<th>Nº</th>
+<th>Rasgo Identitario</th>
+<th>Significado Conceptual</th>
+<th>Variable Paramétrica</th>
+<th>Rango Paramétrico</th>
+<th>Valor Según Animalistas</th>
+<th>Función en la Fachada</th>
+</tr>
+</thead>
+<tbody id="tabla-rasgos-body">
+
+<!-- 10 FILAS ORIGINALES -->
+<tr><td>1</td><td>Cariño</td><td>Vínculo afectivo, ternura y unión emocional.</td><td>gradiente_color</td><td>0.0 – 1.0</td><td>0.66</td><td>Gradiente suave envolvente.</td></tr>
+
+<tr><td>2</td><td>Empatía</td><td>Sensibilidad para percibir al otro ser vivo.</td><td>intensidad_luz</td><td>0.0 – 1.0</td><td>0.74</td><td>Luz suave y homogénea.</td></tr>
+
+<tr><td>3</td><td>Justicia</td><td>Postura ética firme frente al daño animal.</td><td>opacidad</td><td>0.0 – 1.0</td><td>0.65</td><td>Zonas opacas firmes.</td></tr>
+
+<tr><td>4</td><td>Respeto</td><td>Reconocimiento del valor de la vida animal.</td><td>apertura_paneles</td><td>0–100</td><td>60</td><td>Apertura cinética.</td></tr>
+
+<tr><td>5</td><td>Calidez</td><td>Ternura y contacto amable.</td><td>textura_suave</td><td>0–100</td><td>72</td><td>Superficie suave.</td></tr>
+
+<tr><td>6</td><td>Refugio</td><td>Protección y seguridad.</td><td>forma_refugio</td><td>0–100</td><td>58</td><td>Curvaturas protectoras.</td></tr>
+
+<tr><td>7</td><td>Naturaleza</td><td>Conexión ecológica.</td><td>ondulacion_organica</td><td>0.0 – 1.0</td><td>0.74</td><td>Ondas biomiméticas.</td></tr>
+
+<tr><td>8</td><td>Rescate</td><td>Acción ética de salvar vidas.</td><td>direccionalidad_fluida</td><td>0.0 – 1.0</td><td>0.69</td><td>Flujos dinámicos.</td></tr>
+
+<tr><td>9</td><td>Calma</td><td>Bienestar emocional.</td><td>porosidad_luminosa</td><td>0–100</td><td>66</td><td>Luz filtrada.</td></tr>
+
+<tr><td>10</td><td>Rechazo</td><td>Negación del maltrato animal.</td><td>saturacion_contraste</td><td>0.0 – 1.0</td><td>0.57</td><td>Zonas contrastadas.</td></tr>
+
+</tbody>
+</table>
+</div>
+
+<!-- RASGOS + IMAGEN -->
+<div class="zona-rasgos">
+
+<div class="col-izq">
+
+<!-- 10 RASGOS COMPLETOS -->
+<div class="rasgo-btn" onclick="toggleRasgo(1)">RASGO IDENTITARIO: CARIÑO</div>
+<div id="t1" class="rasgo-texto">
+El cariño emerge como un ensamblaje afectivo que articula la relación humano–animal a través de ternura, cercanía y cuidado. Desde DeLanda, estos afectos estructuran patrones estables dentro del sistema social, modulando prácticas y percepciones; para Moscovici, el cariño se consolida como representación social compartida que define cómo el colectivo se interpreta a sí mismo en vínculo con los animales. Las respuestas evidenciaron imágenes recurrentes de suavidad, calma, acompañamiento y gestos protectores, configurando un imaginario donde los animales no son objetos, sino sujetos emocionales. En el lenguaje global descrito por Leach, el cariño se transmite mediante gradientes suaves y atmósferas desaturadas: el tono verde-grisáceo promedio (RGB 162,169,153) y su difuminado hacia blanco generan una estética afectiva universal vinculada al bienestar. Eco interpreta estos tonos como signos icónicos de calma; Jencks entiende el gradiente como narrativa que guía emocionalmente hacia el alivio; Pellegrino destaca que la continuidad cromática facilita una lectura táctil y perceptual suave. Para Caivano y Chauvie & Risso, estos tonos generan reposo perceptual y pureza sensorial. En términos paramétricos —según Schumacher— el valor 0.66 del parámetro gradiente_color produce una transición continua que comunica ternura sin ser decorativa, sino semántica. Arquitectónicamente, la fachada adopta un gradiente que envuelve el volumen, suavizando bordes, reduciendo tensión visual y proyectando un gesto emocional claro: el edificio “abraza” al observador.
+<!-- PEGAR AQUÍ TEXTO LARGO DE CARIÑO -->
+</div>
+
+<div class="rasgo-btn" onclick="toggleRasgo(2)">RASGO IDENTITARIO: EMPATÍA</div>
+<div id="t2" class="rasgo-texto">
+La empatía se configura como un ensamblaje emocional que permite reconocer la sensibilidad y el sentir del otro ser vivo. Para DeLanda, esta disposición afectiva estabiliza relaciones sociales basadas en cuidado mutuo; desde Moscovici, se manifiesta como una representación compartida centrada en la capacidad de “sentir con el animal”. Las respuestas muestran imágenes de escucha, conexión visual, acompañamiento tranquilo y delicadeza, conformando un imaginario donde la percepción emocional es fundamental. En el lenguaje global, según Leach, la empatía se expresa mediante luminosidades suaves y difusas que generan atmósferas contenidas; el parámetro intensidad_luz (valor 0.74) produce una iluminación homogénea asociada a tranquilidad emocional. Eco interpreta la luz tenue como signo que suaviza la percepción; Jencks plantea que las atmósferas luminosas bajas comunican cercanía; Pellegrino las relaciona con lectura perceptual calmada. Para Caivano, la luz difusa reduce activación emocional; Chauvie & Risso explican que un brillo suave expande el campo sensorial de forma acogedora. Paramétricamente, la intensidad regulada produce un entorno perceptual empático. En arquitectura, la luz suave envuelve los paneles generando una atmósfera íntima donde la interacción humano–animal se percibe con sensibilidad y apertura emocional.
+<!-- PEGAR AQUÍ TEXTO LARGO DE EMPATÍA -->
+</div>
+
+<div class="rasgo-btn" onclick="toggleRasgo(3)">RASGO IDENTITARIO: JUSTICIA</div>
+<div id="t3" class="rasgo-texto">
+La justicia aparece como un ensamblaje ético que articula el rechazo al daño animal y la defensa activa de su bienestar. Para DeLanda, esta postura reorganiza prácticas y tensiones sociales; Moscovici explica que se convierte en una representación compartida donde el colectivo sostiene una ética firme ante el maltrato. Las imágenes asociadas —determinación, contención, protección y límites claros— consolidan un mapa simbólico de responsabilidad moral. En el lenguaje global, según Leach, la justicia se expresa mediante contrastes y opacidades que comunican firmeza. El parámetro opacidad (valor 0.65) genera zonas densas y visualmente contundentes. Eco entiende la opacidad como signo de solidez; Jencks observa que los contrastes construyen narrativas de decisión; Pellegrino destaca la lectura táctil más pesada como señal de fuerza simbólica. Para Caivano, los tonos densos elevan la intensidad perceptual; Chauvie & Risso señalan que la reducción de transparencia enfatiza presencia y autoridad. Paramétricamente, la opacidad regula la imposibilidad de atravesamiento visual, comunicando límites éticos. En la fachada, estas áreas opacas funcionan como planos firmes que simbolizan la protección activa de la vida animal y la postura ética del colectivo.
+<!-- PEGAR AQUÍ TEXTO LARGO DE JUSTICIA -->
+</div>
+
+<div class="rasgo-btn" onclick="toggleRasgo(4)">RASGO IDENTITARIO: RESPETO</div>
+<div id="t4" class="rasgo-texto">
+El respeto se configura como un ensamblaje moral donde reconocer el valor intrínseco de la vida animal se vuelve principio relacional. Desde DeLanda, estabiliza comportamientos de consideración y trato digno; para Moscovici, se expresa como imagen compartida que define la posición ética del grupo. Las respuestas destacan imágenes de reconocimiento, presencia mutua y equilibrio emocional, conformando un mapa simbólico donde cada vida merece ser atendida. En el lenguaje global descrito por Leach, el respeto se comunica mediante aperturas controladas que simbolizan transparencia ética. El parámetro apertura_paneles (valor 60) produce modulaciones que evocan gesto de apertura responsable. Eco interpreta la apertura como signo de disponibilidad; Jencks la entiende como narrativa espacial de bienvenida; Pellegrino destaca la relación entre apertura, porosidad perceptual y significado ético. Para Caivano, la apertura genera respiración visual; Chauvie & Risso la relacionan con expansión emocional. Paramétricamente, la apertura traduce accesibilidad y claridad moral. Arquitectónicamente, la fachada regula el paso de luz y aire con paneles cinéticos que simbolizan un respeto activo, equilibrado y consciente.
+<!-- PEGAR AQUÍ TEXTO LARGO DE RESPETO -->
+</div>
+
+<div class="rasgo-btn" onclick="toggleRasgo(5)">RASGO IDENTITARIO: CALIDEZ</div>
+<div id="t5" class="rasgo-texto">
+La calidez se configura como un ensamblaje afectivo basado en cercanía emocional, amabilidad y contacto amable. Desde DeLanda, organiza dinámicas de acogida; para Moscovici, funciona como representación sensible construida por imágenes de suavidad, abrigo y vínculo emocional. En el lenguaje global, según Leach, la calidez se expresa mediante texturas suaves y atmósferas que evocan contacto humano cercano. El parámetro textura_suave (valor 72) produce superficies táctiles emocionalmente receptivas. Eco interpreta lo suave como signo icónico de cuidado; Jencks entiende las texturas cálidas como narrativas sensibles; Pellegrino destaca su lectura táctil amable. Para Caivano, las superficies suaves reducen tensión perceptual; Chauvie & Risso explican que la suavidad genera expansión sensorial tranquilizadora. Paramétricamente, la textura regula la rugosidad emocional percibida. En la fachada, la materialidad se vuelve amable al tacto visual: paneles de superficie lisa y cálida que comunican afecto, protección y cercanía.
+<!-- PEGAR AQUÍ CALIDEZ -->
+</div>
+
+<div class="rasgo-btn" onclick="toggleRasgo(6)">RASGO IDENTITARIO: REFUGIO</div>
+<div id="t6" class="rasgo-texto">
+El refugio se manifiesta como un ensamblaje protector donde la seguridad y la contención emocional se vuelven centrales. Para DeLanda, esta función organizativa estabiliza prácticas de cuidado; Moscovici la entiende como representación que comunica protección, abrigo y resguardo. Las imágenes asociadas —curvaturas, envolvencias y espacios que abrazan— consolidan un mapa simbólico donde el animal es acogido. En el lenguaje global, Leach señala que las formas envolventes son universales en la comunicación de protección emocional. El parámetro forma_refugio (valor 58) genera curvaturas que evocan acogimiento espacial. Eco interpreta lo envolvente como signo de amparo; Jencks entiende las formas curvas como narrativas de protección; Pellegrino las relaciona con suavidad perceptual envolvente. Para Caivano, las formas curvas disminuyen agresividad visual; Chauvie & Risso explican que lo envolvente expande la sensación de abrigo. Paramétricamente, la curvatura regula la intensidad del gesto protector. En la fachada, las formas curvas funcionan como “capas protectoras” que abrazan el volumen y proyectan un refugio emocional.
+<!-- PEGAR AQUÍ REFUGIO -->
+</div>
+
+<div class="rasgo-btn" onclick="toggleRasgo(7)">RASGO IDENTITARIO: NATURALEZA</div>
+<div id="t7" class="rasgo-texto">
+La naturaleza se constituye como un ensamblaje ecológico que articula continuidad vital y conexión biodiversa. Desde DeLanda, expresa vínculos materiales entre seres vivos; para Moscovici, se manifiesta como representación que integra armonía, fluidez y vida compartida. Las imágenes de ondulación, ritmo y organicidad consolidan un mapa simbólico donde la vida fluye. En el lenguaje global descrito por Leach, la naturaleza se comunica mediante morfologías fluidas y patrones bioinspirados. El parámetro ondulacion_organica (valor 0.74) produce variaciones suaves que evocan movimiento vital. Eco interpreta las curvas orgánicas como signos de vida; Jencks las comprende como narrativas de continuidad; Pellegrino destaca su lectura táctil fluida. Para Caivano, la organicidad disminuye rigidez perceptual; Chauvie & Risso explican que las ondulaciones generan expansión sensorial. Paramétricamente, la ondulación regula continuidad formal y emocional. En la fachada, las variaciones fluidas producen una lectura viva, ecológica y dinámica que conecta al edificio con el entorno natural.
+<!-- PEGAR AQUÍ NATURALEZA -->
+</div>
+
+<div class="rasgo-btn" onclick="toggleRasgo(8)">RASGO IDENTITARIO: RESCATE</div>
+<div id="t8" class="rasgo-texto">
+El rescate se configura como ensamblaje ético–activo centrado en la defensa y salvaguarda de los animales. Para DeLanda, organiza prácticas de intervención y acción; Moscovici lo reconoce como narrativa colectiva marcada por urgencia ética. Las respuestas muestran imágenes de movimiento, dirección y fuerza protectora. En el lenguaje global, Leach explica que las direcciones fluidas comunican acciones dinámicas. El parámetro direccionalidad_fluida (valor 0.69) genera trazos que simbolizan iniciativa y movimiento salvador. Eco interpreta la direccionalidad como signo de acción; Jencks la ve como narrativa espacial de avance; Pellegrino la vincula con lectura energética del espacio. Para Caivano, los flujos aumentan activación perceptual; Chauvie & Risso señalan que la direccionalidad expande el campo sensorial. Paramétricamente, el flujo regula el impulso ético. En la fachada, las líneas dinámicas representan la acción de rescatar, comunicando energía moral y movimiento protector.
+<!-- PEGAR AQUÍ RESCATE -->
+</div>
+
+<div class="rasgo-btn" onclick="toggleRasgo(9)">RASGO IDENTITARIO: CALMA</div>
+<div id="t9" class="rasgo-texto">
+La calma se configura como ensamblaje emocional de bienestar, serenidad y equilibrio perceptual. Para DeLanda, estabiliza prácticas de sosiego; Moscovici la concibe como representación social que produce atmósferas de reposo. Las respuestas evocan silencio, suavidad, respiración pausada y luz tenue. En el lenguaje global, Leach señala que la calma se expresa mediante porosidades luminosas y difusiones amplias. El parámetro porosidad_luminosa (valor 66) genera filtraciones suaves. Eco interpreta la luz filtrada como signo de quietud; Jencks la reconoce como narrativa de suspensión; Pellegrino destaca su efecto perceptual atenuado. Para Caivano, las porosidades disminuyen activación emocional; Chauvie & Risso explican que la luz filtrada expande la sensación de descanso. Paramétricamente, la porosidad regula el grado de serenidad visual. En la fachada, la luz calma filtra el entorno y produce un ambiente emocionalmente equilibrado.
+<!-- PEGAR AQUÍ CALMA -->
+</div>
+
+<div class="rasgo-btn" onclick="toggleRasgo(10)">RASGO IDENTITARIO: RECHAZO</div>
+<div id="t10" class="rasgo-texto">
+El rechazo se configura como ensamblaje emocional y ético que articula la negación del maltrato animal. Para DeLanda, organiza tensiones y límites afectivos; Moscovici lo entiende como representación que comunica indignación moral. Las respuestas muestran imágenes de contraste, ruptura y firmeza emocional. En el lenguaje global, según Leach, el rechazo se expresa mediante saturaciones contrastadas que transmiten impacto moral. El parámetro saturacion_contraste (valor 0.57) genera áreas perceptualmente intensas. Eco interpreta el contraste como signo de advertencia; Jencks lo ve como narrativa de oposición; Pellegrino destaca la lectura táctil abrupta como señal de tensión simbólica. Para Caivano, los contrastes elevan activación emocional; Chauvie & Risso explican que la saturación genera campos sensoriales enfáticos. Paramétricamente, la saturación regula el grado de rechazo expresado. En la fachada, los contrastes funcionan como alertas visuales que denuncian la violencia animal y expresan una postura ética firme.
+<!-- PEGAR AQUÍ RECHAZO -->
+</div>
+
+</div>
+
+<div class="col-der">
+    <img src="static/img/animalistas_ilustracion.png" class="img-columna">
+</div>
+
+</div>
+
+<!-- BOTONES ABAJO -->
+<div class="botones-inferiores">
+    <button class="btn-bottom"
+        onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLScUmgCjS6PLPH3ADlWlKlo0d7MOkndYrwhTFyjJTP1r2gGVzA/viewform?usp=header', '_blank')">
+        ENCUESTA
+    </button>
+
+    <button class="btn-bottom" onclick="window.location.href='editor.html'">EDITOR</button>
+</div>
+
+<footer>© DICCIONARIO PARAMÉTRICO 2025. Todos los derechos reservados.</footer>
+
+<div class="overlay-superior"></div>
+
+<!-- ANIMACION -->
+<canvas id="canvas"></canvas>
+<script src="static/animacion_huellas.js"></script>
+
+<script>
+/* MENÚ */
+document.getElementById("menuBtn").onclick = ()=>{
+    document.getElementById("sideMenu").classList.toggle("activo");
+};
+function toggleSubmenu(){
+    document.getElementById("submenu").classList.toggle("oculto");
+}
+
+/* ACORDEÓN SOLO UNO ABIERTO */
+let rasgoAbierto = null;
+
+function toggleRasgo(idx){
+    const id = "t" + idx;
+    const panel = document.getElementById(id);
+
+    if(rasgoAbierto && rasgoAbierto !== id){
+        document.getElementById(rasgoAbierto).style.display="none";
+    }
+
+    panel.style.display = (panel.style.display==="block") ? "none" : "block";
+    rasgoAbierto = (panel.style.display==="block") ? id : null;
+}
+
+/* CARGA DESDE EDITOR (localStorage) */
+(function(){
+    const tbody = document.getElementById("tabla-rasgos-body");
+    const dataJSON = localStorage.getItem("diccionarioAnimalista");
+    if(!dataJSON) return;
+
+    try{
+        const filas = JSON.parse(dataJSON);
+        tbody.innerHTML="";
+        filas.forEach((f, idx)=>{
+            const tr=document.createElement("tr");
+            tr.innerHTML=`
+                <td>${f.numero ?? idx+1}</td>
+                <td>${f.rasgo}</td>
+                <td>${f.significado}</td>
+                <td>${f.variable}</td>
+                <td>${f.rango}</td>
+                <td>${f.valor}</td>
+                <td>${f.funcion}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }catch(e){}
+})();
+</script>
+
+</body>
+</html>
