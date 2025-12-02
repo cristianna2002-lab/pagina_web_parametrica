@@ -284,6 +284,139 @@
         color:#555;
         margin-bottom:20px;
     }
+        /* ============================
+   FOOTER
+============================ */
+footer{
+    width:100%;
+    text-align:center;
+    font-size:12px;
+    color:#555;
+    margin-bottom:20px;
+}
+
+/* ======================================================
+   RESPONSIVE — TABLETS Y CELULARES
+====================================================== */
+
+/* TABLETS */
+@media (max-width: 1024px) {
+
+    .titulo-principal{
+        font-size: 22px;
+        margin-top: 35px;
+        margin-bottom: 25px;
+    }
+
+    .menu-btn{
+        width: 55px;
+        height: 55px;
+        font-size: 34px;
+        right: 25px;
+        top: 25px;
+    }
+
+    .submenu, .menu-group{
+        font-size: 18px;
+    }
+
+    table.tabla-rasgos{
+        font-size: 10px;
+    }
+
+    .zona-rasgos{
+        gap: 20px;
+    }
+
+    .col-der{
+        margin-top: 80px;
+    }
+}
+
+/* CELULARES */
+@media (max-width: 600px) {
+
+    html, body{
+        overflow-x: hidden;
+    }
+
+    .menu-btn{
+        width: 50px;
+        height: 50px;
+        font-size: 28px;
+        right: 15px;
+        top: 18px;
+    }
+
+    .side-menu{
+        width: 260px;
+        padding: 30px 24px;
+        font-size: 18px;
+    }
+
+    .submenu a, .menu-group{
+        font-size: 16px;
+    }
+
+    .titulo-principal{
+        font-size: 18px;
+        margin-top: 25px;
+        margin-bottom: 20px;
+        width: 90%;
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .tabla-contenedor{
+        width: 98%;
+        overflow-x: auto;
+    }
+
+    table.tabla-rasgos{
+        width: 900px;
+    }
+
+    .zona-rasgos{
+        display:block;
+        margin-top:20px;
+    }
+
+    .rasgo-btn{
+        font-size: 12px;
+        text-align:center;
+    }
+
+    .rasgo-texto{
+        font-size: 12px;
+        max-width:100%;
+        margin-left:0;
+    }
+
+    .col-der{
+        margin-top: 20px;
+    }
+
+    .img-columna{
+        width:90%;
+    }
+
+    .botones-inferiores{
+        flex-direction:column;
+        gap:14px;
+        width:90%;
+    }
+
+    .btn-bottom{
+        width:100%;
+        font-size:12px;
+        padding:12px;
+    }
+
+    footer{
+        font-size:11px;
+        margin-bottom:12px;
+    }
+}
     </style>
 </head>
 <body>
@@ -493,6 +626,7 @@ function toggleRasgo(idx){
 
 </body>
 </html>
+
 
 
 
