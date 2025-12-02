@@ -367,13 +367,20 @@ footer{
         margin-right:auto;
     }
 
+    /* 🔥 ESTA ES LA PARTE QUE ARREGLA LA TABLA */
     .tabla-contenedor{
-        width: 98%;
+        width: 100%;
         overflow-x: auto;
     }
 
     table.tabla-rasgos{
-        width: 900px;
+        width: 100%;   /* ← YA NO ES 900px */
+        font-size: 10px;
+    }
+
+    .tabla-rasgos th,
+    .tabla-rasgos td{
+        padding: 4px;
     }
 
     .zona-rasgos{
@@ -417,6 +424,7 @@ footer{
         margin-bottom:12px;
     }
 }
+
     </style>
 </head>
 <body>
