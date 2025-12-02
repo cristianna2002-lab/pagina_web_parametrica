@@ -233,105 +233,6 @@ input.campo{
     cursor:pointer;
     box-shadow:0 0 12px rgba(78,217,211,0.55);
 }
-   /* ======================================================
-   RESPONSIVE — TABLETS Y CELULARES
-====================================================== */
-
-/* TABLETS */
-@media (max-width: 1024px){
-
-    .menu-btn{
-        width:55px;
-        height:55px;
-        font-size:34px;
-        right:25px;
-        top:25px;
-    }
-
-    .side-menu{
-        width:280px;
-        padding:30px 22px;
-        font-size:18px;
-    }
-
-    #editor{
-        padding-top:110px;
-    }
-
-    .grid{
-        grid-template-columns:repeat(3,1fr);
-        gap:20px;
-    }
-
-    .tarjeta{
-        padding:16px;
-    }
-
-    .titulo-tarjeta{
-        font-size:13px;
-    }
-
-    input.campo{
-        font-size:11px;
-    }
-}
-
-/* CELULARES */
-@media (max-width: 600px){
-
-    html, body{
-        overflow-x:hidden;
-    }
-
-    .menu-btn{
-        width:50px;
-        height:50px;
-        font-size:30px;
-        right:15px;
-        top:18px;
-    }
-
-    .side-menu{
-        width:250px;
-        padding:26px 20px;
-        font-size:17px;
-    }
-
-    .submenu{
-        font-size:15px;
-    }
-
-    #pantalla-acceso .card{
-        width:90%;
-        padding:26px;
-    }
-
-    #editor{
-        width:98%;
-        padding-top:110px;
-    }
-
-    .grid{
-        grid-template-columns:repeat(1,1fr);
-        gap:18px;
-    }
-
-    .tarjeta{
-        padding:16px;
-    }
-
-    .titulo-tarjeta{
-        font-size:14px;
-        text-align:center;
-    }
-
-    .btn-guardar{
-        width:85%;
-        font-size:13px;
-        padding:12px;
-    }
-}
-
 </style>
 </head>
 
@@ -421,7 +322,7 @@ let datos = JSON.parse(localStorage.getItem("diccionarioAnimalista")) || [
     {rasgo:"Cuidado", significado:"Acciones afectivas cotidianas hacia los animales.", variable:"porosidad_formal", rango:"0.0-1.0", valor:0.84, funcion:"Mayor porosidad → más accesibilidad y cuidado."},
     {rasgo:"Indignación", significado:"Reacción moral ante el daño animal.", variable:"peso_formal", rango:"0.0-1.0", valor:0.91, funcion:"Mayor peso formal → mayor potencia ética."}
 ];
-
+   
 /* ------------------------------
    GENERAR TARJETAS
 ------------------------------ */
@@ -468,8 +369,7 @@ function cambiar(i,dir){
 /* ------------------------------
    SUBIR A LA API (PHP)
 ------------------------------ */
-async function subirAPI(){
-
+async function subirAPI() {
     let apiData = {};
 
     datos.forEach(d => {
@@ -482,20 +382,17 @@ async function subirAPI(){
         };
     });
 
-    // Ruta correcta (misma carpeta)
-    await fetch("guardar.php", {
+    await fetch("https://pagina-web-parametrica.onrender.com/guardar.php", {
         method: "POST",
-        headers: {"Content-Type":"application/json"},
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(apiData)
     });
 }
 
 /* ------------------------------
-   GUARDAR TODO → generar variables.json
+   GUARDAR TODO + API
 ------------------------------ */
 async function guardar(){
-
-    // actualizar datos desde los inputs
     datos.forEach((d,i)=>{
         d.significado = document.getElementById("s"+i).value;
         d.variable    = document.getElementById("v"+i).value;
@@ -504,30 +401,20 @@ async function guardar(){
         d.funcion     = document.getElementById("f"+i).value;
     });
 
-    // crear JSON final tal como lo usa variables.json
-    let jsonFinal = {};
-    datos.forEach(d => {
-        jsonFinal[d.rasgo.toLowerCase()] = {
-            significado: d.significado,
-            variable: d.variable,
-            rango: d.rango,
-            valor: d.valor,
-            funcion: d.funcion
-        };
-    });
+    // Guardar local
+    localStorage.setItem("diccionarioAnimalista", JSON.stringify(datos));
 
-    // copiar al portapapeles
-    await navigator.clipboard.writeText(JSON.stringify(jsonFinal, null, 2));
-
-    alert("✔ JSON actualizado\n\nYa está copiado.\nAhora ve a GitHub → abre variables.json → pega → y guarda los cambios.");
+    // Guardar API (si existe)
+    try{
+        await subirAPI();
+        alert("Cambios guardados y API actualizada ✔");
+    }catch(e){
+        alert("Cambios guardados (API aún no conectada) ✔");
+    }
 }
 
 </script>
 
 </body>
 </html>
-
-
-
-
-
+ est es el editor 
