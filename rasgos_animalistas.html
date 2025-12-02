@@ -424,6 +424,29 @@ footer{
         margin-bottom:12px;
     }
 }
+/* ========== FIX DEFINITIVO PARA CELULARES — CANVAS NO TAPA LA TABLA ========== */
+@media (max-width: 600px){
+    canvas#canvas{
+        z-index: -10 !important;
+        pointer-events: none !important;
+    }
+    .overlay-superior{
+        z-index: -8 !important;
+        height: 180px !important;
+    }
+    .tabla-contenedor{
+        position: relative;
+        z-index: 5 !important;
+    }
+    table.tabla-rasgos{
+        position: relative;
+        z-index: 10 !important;
+    }
+    .zona-rasgos{
+        position: relative;
+        z-index: 20 !important;
+    }
+}
 
     </style>
 </head>
@@ -609,6 +632,7 @@ function toggleRasgo(idx){
 
 </body>
 </html>
+
 
 
 
