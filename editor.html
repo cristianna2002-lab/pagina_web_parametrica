@@ -233,6 +233,105 @@ input.campo{
     cursor:pointer;
     box-shadow:0 0 12px rgba(78,217,211,0.55);
 }
+   /* ======================================================
+   RESPONSIVE — TABLETS Y CELULARES
+====================================================== */
+
+/* TABLETS */
+@media (max-width: 1024px){
+
+    .menu-btn{
+        width:55px;
+        height:55px;
+        font-size:34px;
+        right:25px;
+        top:25px;
+    }
+
+    .side-menu{
+        width:280px;
+        padding:30px 22px;
+        font-size:18px;
+    }
+
+    #editor{
+        padding-top:110px;
+    }
+
+    .grid{
+        grid-template-columns:repeat(3,1fr);
+        gap:20px;
+    }
+
+    .tarjeta{
+        padding:16px;
+    }
+
+    .titulo-tarjeta{
+        font-size:13px;
+    }
+
+    input.campo{
+        font-size:11px;
+    }
+}
+
+/* CELULARES */
+@media (max-width: 600px){
+
+    html, body{
+        overflow-x:hidden;
+    }
+
+    .menu-btn{
+        width:50px;
+        height:50px;
+        font-size:30px;
+        right:15px;
+        top:18px;
+    }
+
+    .side-menu{
+        width:250px;
+        padding:26px 20px;
+        font-size:17px;
+    }
+
+    .submenu{
+        font-size:15px;
+    }
+
+    #pantalla-acceso .card{
+        width:90%;
+        padding:26px;
+    }
+
+    #editor{
+        width:98%;
+        padding-top:110px;
+    }
+
+    .grid{
+        grid-template-columns:repeat(1,1fr);
+        gap:18px;
+    }
+
+    .tarjeta{
+        padding:16px;
+    }
+
+    .titulo-tarjeta{
+        font-size:14px;
+        text-align:center;
+    }
+
+    .btn-guardar{
+        width:85%;
+        font-size:13px;
+        padding:12px;
+    }
+}
+
 </style>
 </head>
 
@@ -419,6 +518,7 @@ async function guardar(){
 
 </body>
 </html>
+
 
 
 
