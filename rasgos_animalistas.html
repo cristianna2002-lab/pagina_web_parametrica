@@ -439,34 +439,34 @@ function toggleRasgo(idx){
     rasgoAbierto = (panel.style.display==="block") ? id : null;
 }
 
-/* CARGA DESDE EDITOR (localStorage) */
-(function(){
-    const tbody = document.getElementById("tabla-rasgos-body");
-    const dataJSON = localStorage.getItem("diccionarioAnimalista");
-    if(!dataJSON) return;
+/* CARGAR TABLA DESDE variables.json */
+fetch("variables.json")
+  .then(r => r.json())
+  .then(filas => {
+      const tbody = document.getElementById("tabla-rasgos-body");
+      tbody.innerHTML = "";
 
-    try{
-        const filas = JSON.parse(dataJSON);
-        tbody.innerHTML="";
-        filas.forEach((f, idx)=>{
-            const tr=document.createElement("tr");
-            tr.innerHTML=`
-                <td>${f.numero ?? idx+1}</td>
-                <td>${f.rasgo}</td>
-                <td>${f.significado}</td>
-                <td>${f.variable}</td>
-                <td>${f.rango}</td>
-                <td>${f.valor}</td>
-                <td>${f.funcion}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }catch(e){}
-})();
+      filas.forEach((f, idx) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+              <td>${f.numero || idx+1}</td>
+              <td>${f.rasgo}</td>
+              <td>${f.significado}</td>
+              <td>${f.variable}</td>
+              <td>${f.rango}</td>
+              <td>${f.valor}</td>
+              <td>${f.funcion}</td>
+          `;
+          tbody.appendChild(tr);
+      });
+  })
+  .catch(err => console.error("ERROR:", err));
+
 </script>
 
 </body>
 </html>
+
 
 
 
