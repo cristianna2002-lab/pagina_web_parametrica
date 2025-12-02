@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- AQUI -->
     <title>Metodología del Diccionario Paramétrico</title>
 
     <!-- Fuente Gotham instalada localmente -->
@@ -241,6 +242,122 @@ footer{
 .submenu a {
     font-weight:300 !important;
 }
+        /* ======================================================
+   RESPONSIVE — TABLETS Y CELULARES
+====================================================== */
+
+/* TABLETS */
+@media (max-width: 1024px) {
+
+    .titulo-principal{
+        font-size: 22px;
+        margin-top: 35px;
+    }
+
+    .menu-btn{
+        width: 55px;
+        height: 55px;
+        font-size: 34px;
+        right: 25px;
+        top: 25px;
+    }
+
+    .btn-titulo{
+        min-width: 260px;
+        max-width: 260px;
+        font-size: 10px;
+        padding: 10px 18px;
+    }
+
+    .texto{
+        font-size: 11px;
+        max-width: 100%;
+        margin-left: 20px;
+    }
+
+    .contenedor{
+        width: 96%;
+    }
+}
+
+/* CELULARES */
+@media (max-width: 600px) {
+
+    html, body{
+        overflow-x: hidden;
+    }
+
+    /* Menú hamburguesa */
+    .menu-btn{
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        right: 15px;
+        top: 18px;
+        border-radius: 14px;
+    }
+
+    .side-menu{
+        width: 260px;
+        padding: 30px 24px;
+        font-size: 18px;
+    }
+
+    .submenu a, .menu-group{
+        font-size: 17px;
+    }
+
+    /* Título */
+    .titulo-principal{
+        font-size: 18px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Estructura de bloques */
+    .bloque{
+        display: block;
+        margin-bottom: 30px;
+    }
+
+    .btn-titulo{
+        width: 100%;
+        min-width: unset;
+        max-width: unset;
+        text-align: center;
+        font-size: 11px;
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .texto{
+        margin-left: 0;
+        font-size: 12px;
+        line-height: 1.55;
+        text-align: justify;
+        padding: 0 5px;
+    }
+
+    /* Botón inferior */
+    .btn-bottom{
+        width: 85%;
+        font-size: 12px;
+        padding: 12px;
+        margin-top: 20px;
+    }
+
+    .box-colectivos a{
+        font-size: 12px;
+    }
+
+    footer{
+        font-size: 11px;
+        margin-bottom: 12px;
+    }
+}
 
     </style>
 </head>
@@ -384,4 +501,5 @@ menuBtn.onclick = () => {
 
 </body>
 </html>
+
 
