@@ -1,72 +1,92 @@
-{
-  "conexion": {
+[
+  {
+    "numero": 1,
+    "rasgo": "Conexión",
     "significado": "Vínculo afectivo profundo con los animales.",
     "variable": "textura_suavidad",
     "rango": "0.0-1.0",
     "valor": 0.78,
     "funcion": "Mayor suavidad percibida → mayor conexión."
   },
-  "empatia": {
+  {
+    "numero": 2,
+    "rasgo": "Empatía",
     "significado": "Capacidad de sentir el dolor animal como propio.",
     "variable": "color_calidez",
     "rango": "0.0-1.0",
     "valor": 0.92,
     "funcion": "Colores cálidos aumentan empatía y cercanía."
   },
-  "proteccion": {
+  {
+    "numero": 3,
+    "rasgo": "Protección",
     "significado": "Impulso moral de defender y cuidar a los animales.",
     "variable": "cierre_formal",
     "rango": "0.0-1.0",
     "valor": 0.85,
     "funcion": "Mayor cierre formal → mayor sensación de refugio."
   },
-  "impacto": {
+  {
+    "numero": 4,
+    "rasgo": "Impacto",
     "significado": "Reacción emocional intensa ante el maltrato animal.",
     "variable": "intensidad_gradiente",
     "rango": "0.0-1.0",
     "valor": 0.9,
     "funcion": "Gradientes intensos generan tensión emocional."
   },
-  "naturaleza": {
+  {
+    "numero": 5,
+    "rasgo": "Naturaleza",
     "significado": "Asociación con espacios abiertos y bienestar animal.",
     "variable": "apertura_espacial",
     "rango": "0.0-1.0",
     "valor": 0.95,
     "funcion": "Mayor apertura → más flujo, aire y luz."
   },
-  "respeto": {
+  {
+    "numero": 6,
+    "rasgo": "Respeto",
     "significado": "Reconocimiento del animal como ser sintiente.",
     "variable": "regularidad_formal",
     "rango": "0.0-1.0",
     "valor": 0.82,
     "funcion": "Mayor orden y regularidad comunican respeto."
   },
-  "justicia": {
+  {
+    "numero": 7,
+    "rasgo": "Justicia",
     "significado": "Denuncia del maltrato y necesidad ética de actuar.",
     "variable": "contraste_formal",
     "rango": "0.0-1.0",
     "valor": 0.87,
     "funcion": "Mayor contraste → mayor fuerza de denuncia."
   },
-  "sensibilidad": {
+  {
+    "numero": 8,
+    "rasgo": "Sensibilidad",
     "significado": "Reacción emocional ante estímulos y atmósferas.",
     "variable": "luminosidad_interior",
     "rango": "0.0-1.0",
     "valor": 0.89,
     "funcion": "Mayor luz suave → mayor sensibilidad perceptual."
   },
-  "cuidado": {
+  {
+    "numero": 9,
+    "rasgo": "Cuidado",
     "significado": "Acciones afectivas cotidianas hacia los animales.",
     "variable": "porosidad_formal",
     "rango": "0.0-1.0",
     "valor": 0.84,
     "funcion": "Mayor porosidad → más accesibilidad y cuidado."
   },
-  "indignacion": {
+  {
+    "numero": 10,
+    "rasgo": "Indignación",
     "significado": "Reacción moral ante el daño animal.",
     "variable": "peso_formal",
     "rango": "0.0-1.0",
     "valor": 0.91,
     "funcion": "Mayor peso formal → mayor potencia ética."
   }
-}
+]
