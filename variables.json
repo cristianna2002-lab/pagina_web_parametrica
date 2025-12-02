@@ -1,72 +1,72 @@
 {
-  "cariño": {
-    "significado": "Vínculo afectivo",
-    "variable": "gradiente_color",
-    "rango": "0.0–1.0",
-    "valor": 0.66,
-    "funcion": "Gradiente suave"
+  "conexion": {
+    "significado": "Vínculo afectivo profundo con los animales.",
+    "variable": "textura_suavidad",
+    "rango": "0.0-1.0",
+    "valor": 0.78,
+    "funcion": "Mayor suavidad percibida → mayor conexión."
   },
   "empatia": {
-    "significado": "Sensibilidad",
-    "variable": "intensidad_luz",
-    "rango": "0.0–1.0",
-    "valor": 0.74,
-    "funcion": "Luz suave"
+    "significado": "Capacidad de sentir el dolor animal como propio.",
+    "variable": "color_calidez",
+    "rango": "0.0-1.0",
+    "valor": 0.92,
+    "funcion": "Colores cálidos aumentan empatía y cercanía."
   },
-  "justicia": {
-    "significado": "Postura ética",
-    "variable": "opacidad",
-    "rango": "0.0–1.0",
-    "valor": 0.65,
-    "funcion": "Zonas firmes"
+  "proteccion": {
+    "significado": "Impulso moral de defender y cuidar a los animales.",
+    "variable": "cierre_formal",
+    "rango": "0.0-1.0",
+    "valor": 0.85,
+    "funcion": "Mayor cierre formal → mayor sensación de refugio."
   },
-  "respeto": {
-    "significado": "Valor a la vida",
-    "variable": "apertura_paneles",
-    "rango": "0–100",
-    "valor": 60,
-    "funcion": "Apertura cinética"
-  },
-  "calidez": {
-    "significado": "Ternura",
-    "variable": "textura_suave",
-    "rango": "0–100",
-    "valor": 72,
-    "funcion": "Suavidad"
-  },
-  "refugio": {
-    "significado": "Protección",
-    "variable": "forma_refugio",
-    "rango": "0–100",
-    "valor": 58,
-    "funcion": "Curvaturas"
+  "impacto": {
+    "significado": "Reacción emocional intensa ante el maltrato animal.",
+    "variable": "intensidad_gradiente",
+    "rango": "0.0-1.0",
+    "valor": 0.9,
+    "funcion": "Gradientes intensos generan tensión emocional."
   },
   "naturaleza": {
-    "significado": "Conexión viva",
-    "variable": "ondulacion_organica",
-    "rango": "0.0–1.0",
-    "valor": 0.74,
-    "funcion": "Ondas orgánicas"
+    "significado": "Asociación con espacios abiertos y bienestar animal.",
+    "variable": "apertura_espacial",
+    "rango": "0.0-1.0",
+    "valor": 0.95,
+    "funcion": "Mayor apertura → más flujo, aire y luz."
   },
-  "rescate": {
-    "significado": "Salvar vidas",
-    "variable": "direccionalidad_fluida",
-    "rango": "0.0–1.0",
-    "valor": 0.69,
-    "funcion": "Flujos"
+  "respeto": {
+    "significado": "Reconocimiento del animal como ser sintiente.",
+    "variable": "regularidad_formal",
+    "rango": "0.0-1.0",
+    "valor": 0.82,
+    "funcion": "Mayor orden y regularidad comunican respeto."
   },
-  "calma": {
-    "significado": "Bienestar",
-    "variable": "porosidad_luminosa",
-    "rango": "0–100",
-    "valor": 66,
-    "funcion": "Luz filtrada"
+  "justicia": {
+    "significado": "Denuncia del maltrato y necesidad ética de actuar.",
+    "variable": "contraste_formal",
+    "rango": "0.0-1.0",
+    "valor": 0.87,
+    "funcion": "Mayor contraste → mayor fuerza de denuncia."
   },
-  "rechazo": {
-    "significado": "Negación del maltrato",
-    "variable": "saturacion_contraste",
-    "rango": "0.0–1.0",
-    "valor": 0.57,
-    "funcion": "Contraste"
+  "sensibilidad": {
+    "significado": "Reacción emocional ante estímulos y atmósferas.",
+    "variable": "luminosidad_interior",
+    "rango": "0.0-1.0",
+    "valor": 0.89,
+    "funcion": "Mayor luz suave → mayor sensibilidad perceptual."
+  },
+  "cuidado": {
+    "significado": "Acciones afectivas cotidianas hacia los animales.",
+    "variable": "porosidad_formal",
+    "rango": "0.0-1.0",
+    "valor": 0.84,
+    "funcion": "Mayor porosidad → más accesibilidad y cuidado."
+  },
+  "indignacion": {
+    "significado": "Reacción moral ante el daño animal.",
+    "variable": "peso_formal",
+    "rango": "0.0-1.0",
+    "valor": 0.91,
+    "funcion": "Mayor peso formal → mayor potencia ética."
   }
 }
