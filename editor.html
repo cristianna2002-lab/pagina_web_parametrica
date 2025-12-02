@@ -491,9 +491,11 @@ async function subirAPI(){
 }
 
 /* ------------------------------
-   GUARDAR TODO + API
+   GUARDAR TODO → generar variables.json
 ------------------------------ */
 async function guardar(){
+
+    // actualizar datos desde los inputs
     datos.forEach((d,i)=>{
         d.significado = document.getElementById("s"+i).value;
         d.variable    = document.getElementById("v"+i).value;
@@ -502,22 +504,29 @@ async function guardar(){
         d.funcion     = document.getElementById("f"+i).value;
     });
 
-    // Guardar local
-    localStorage.setItem("diccionarioAnimalista", JSON.stringify(datos));
+    // crear JSON final tal como lo usa variables.json
+    let jsonFinal = {};
+    datos.forEach(d => {
+        jsonFinal[d.rasgo.toLowerCase()] = {
+            significado: d.significado,
+            variable: d.variable,
+            rango: d.rango,
+            valor: d.valor,
+            funcion: d.funcion
+        };
+    });
 
-    // Guardar API (si existe)
-    try{
-        await subirAPI();
-        alert("Cambios guardados y API actualizada ✔");
-    }catch(e){
-        alert("Cambios guardados (API aún no conectada) ✔");
-    }
+    // copiar al portapapeles
+    await navigator.clipboard.writeText(JSON.stringify(jsonFinal, null, 2));
+
+    alert("✔ JSON actualizado\n\nYa está copiado.\nAhora ve a GitHub → abre variables.json → pega → y guarda los cambios.");
 }
 
 </script>
 
 </body>
 </html>
+
 
 
 
